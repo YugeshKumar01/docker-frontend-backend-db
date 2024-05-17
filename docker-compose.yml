@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   web:
+    container_name: frontend
     build: ./frontend
     depends_on:
       - api
@@ -9,30 +10,32 @@ services:
     networks:
       - network-backend
   api:
+    container_name: backend
     build: ./backend
     depends_on:
       - mongo
     ports:
       - "3001:3001"
-    networks: 
+    networks:
      - network-backend
-  
+
   mongo:
+    container_name: mongo
     image: mongo
     restart: always
-    volumes: 
+    volumes:
       - mongodb_data:/data/db
-    environment: 
+    environment:
       MONGODB_INITDB_ROOT_USERNAME: username
       MONGODB_INITDB_ROOT_PASSWORD: password
     # uncomment following lines to access db locally
     # ports:
     #   - 27017:27017
-    networks: 
+    networks:
      - network-backend
 
 networks:
   network-backend:
 
-volumes: 
+volumes:
   mongodb_data:
