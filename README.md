@@ -19,3 +19,16 @@ In sever.js,
 
   await mongoose.connect("mongodb://127.0.0.1:27017/todos", {
 
+
+
+To setup docker container:
+
+goto frontend/.env.development and change below code with your public ip of ec2 instance
+REACT_APP_API_URL=http://13.126.189.21:3001/api
+
+goto backend/server.js and do below changes 
+
+async function main() {
+  await mongoose.connect("mongodb://mongo:27017/todos", {
+
+
