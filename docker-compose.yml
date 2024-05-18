@@ -5,7 +5,7 @@ services:
     build: ./frontend
     image: frontend-web:latest
     depends_on:
-      - api
+      - backend-api
     ports:
       - "3000:3000"
     networks:
