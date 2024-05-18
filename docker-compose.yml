@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  web:
+  frontend-web:
     container_name: frontend
     build: ./frontend
     image: frontend-web:latest
@@ -10,7 +10,7 @@ services:
       - "3000:3000"
     networks:
       - network-backend
-  api:
+  backend-api:
     container_name: backend
     build: ./backend
     image: backend-api:latest
