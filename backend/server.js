@@ -4,19 +4,26 @@ const mongoose = require("mongoose");
 const port = 3001;
 const routes = require("./routes");
 
-main().catch((err) => console.log(err));
+main().catch((err) => console.error(err));
 
 async function main() {
-  await mongoose.connect("mongodb://mongo:27017/todos", {        # giving mongo name because my mongodb container name is mongo.
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
-  const app = express();
-  app.use(cors());
-  app.use(express.json());
-  app.use("/api", routes);
+  try {
+    await mongoose.connect("mongodb://mongo:27017/todos", {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
+    console.log("Connected to MongoDB");
+    
+    const app = express();
+    app.use(cors());
+    app.use(express.json());
+    app.use("/api", routes);
 
-  app.listen(port, () => {
-    console.log(`Server is listening on port: ${port}`);
-  });
+    app.listen(port, () => {
+      console.log(`Server is listening on port: ${port}`);
+    });
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1); // Exit the process if connection fails
+  }
 }
