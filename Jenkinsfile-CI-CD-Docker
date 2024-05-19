@@ -11,6 +11,7 @@ pipeline {
                 cleanWs()
             }
         }
+        
         stage('Checkout') {
             steps {
                 git 'https://github.com/YugeshKumar01/docker-frontend-backend-db.git'
@@ -24,6 +25,22 @@ pipeline {
                 }
             }
         }
+        
+        stage('Sonar Code Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube') { // 'sonarqube' is the name you gave to your SonarQube server configuration
+                    script {
+                        def scannerHome = tool name: 'sonarqube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'  // Ensure SonarQube Scanner tool is configured in Jenkins
+                        sh "${scannerHome}/bin/sonar-scanner " +
+                        "-Dsonar.projectKey=frontend-backend-db " +
+                        "-Dsonar.sources=. " +
+                        "-Dsonar.host.url=${env.SONAR_HOST_URL} " +
+                        "-Dsonar.login=${env.SONAR_AUTH_TOKEN}"
+                    }
+                }
+            }
+        }
+
 
         // Add more stages for testing, pushing, and deploying if needed
         stage('Push to Docker Hub') {
